@@ -1,0 +1,5 @@
+*.bak
+*.coverprofile
+capcom-v*
+Godeps/_workspace/*
+Godeps/Readme
