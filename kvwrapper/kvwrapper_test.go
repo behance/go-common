@@ -15,7 +15,7 @@ var _ = Describe("Kvwrapper", func() {
 
 	BeforeEach(func() {
 		log.SetLevel(log.PanicLevel)
-		kv = NewKVWrapper([]string{"http://localhost:2379"}, KVFaker{}, "", "")
+		kv = NewKVWrapper([]string{"http://localhost:2379"}, KVFaker{})
 		kv.Set("parent/child1", "child1val", 0)
 		kv.Set("parent/child2", "child2val", 0)
 	})

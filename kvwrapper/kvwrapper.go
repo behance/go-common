@@ -33,8 +33,12 @@ func (kv *KeyValue) String() string {
 
 // NewKVWrapper takes a list of server urls, username and password and an empty specifc wrapper (like kvwrapper_etcd)
 // and returns an initialized instance of KVWrapper
-func NewKVWrapper(servers []string, wrapper KVWrapper, username, password string) KVWrapper {
+func NewKVWrapperWithAuth(servers []string, wrapper KVWrapper, username, password string) KVWrapper {
 	kvw := wrapper.NewKVWrapper(servers, username, password)
+	return kvw
+}
+func NewKVWrapper(servers []string, wrapper KVWrapper) KVWrapper {
+	kvw := wrapper.NewKVWrapper(servers, "", "")
 	return kvw
 }
 
