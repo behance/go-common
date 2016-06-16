@@ -1,9 +1,8 @@
 package kvwrapper_test
 
 import (
-	log "github.com/behance/flight-director/shared/log"
-	. "github.com/behance/flight-director/worker/kvwrapper"
-	//"github.com/behance/flight-director/worker/kvwrapper_etcd"
+	. "github.com/behance/go-common/kvwrapper"
+	log "github.com/behance/go-common/log"
 
 	. "github.com/onsi/ginkgo"
 	. "github.com/onsi/gomega"
