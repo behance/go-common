@@ -14,8 +14,11 @@ type EtcdWrapper struct {
 }
 
 // NewKVWrapper returns a new kvwrapper_etcd as a KVWrapper
-func (e EtcdWrapper) NewKVWrapper(servers []string) kvwrapper.KVWrapper {
+func (e EtcdWrapper) NewKVWrapper(servers []string, username, password string) kvwrapper.KVWrapper {
 	e.client = etcd.NewClient(servers)
+	if username != "" && password != "" {
+		e.client.SetCredentials(username, password)
+	}
 	return e
 }
 

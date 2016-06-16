@@ -14,7 +14,7 @@ var (
 // KVWrapper is an interface that any Key Value Store (etcd, consul) needs to implement
 // when used by flight director.
 type KVWrapper interface {
-	NewKVWrapper(servers []string) KVWrapper
+	NewKVWrapper(servers []string, username, password string) KVWrapper
 	Set(key string, val string, ttl uint64) error
 	GetVal(key string) (*KeyValue, error)
 	GetList(key string, sort bool) ([]*KeyValue, error)
@@ -31,10 +31,10 @@ func (kv *KeyValue) String() string {
 	return kv.Key + " : " + kv.Value + " : " + strconv.FormatBool(kv.HasChildren)
 }
 
-// NewKVWrapper takes a list of server urls and an empty specifc wrapper (like kvwrapper_etcd)
+// NewKVWrapper takes a list of server urls, username and password and an empty specifc wrapper (like kvwrapper_etcd)
 // and returns an initialized instance of KVWrapper
-func NewKVWrapper(servers []string, wrapper KVWrapper) KVWrapper {
-	kvw := wrapper.NewKVWrapper(servers)
+func NewKVWrapper(servers []string, wrapper KVWrapper, username, password string) KVWrapper {
+	kvw := wrapper.NewKVWrapper(servers, username, password)
 	return kvw
 }
 
@@ -42,7 +42,7 @@ type KVFaker struct {
 	c map[string][]*KeyValue
 }
 
-func (f KVFaker) NewKVWrapper(servers []string) KVWrapper {
+func (f KVFaker) NewKVWrapper(servers []string, username, password string) KVWrapper {
 	f.c = make(map[string][]*KeyValue)
 	return f
 }
