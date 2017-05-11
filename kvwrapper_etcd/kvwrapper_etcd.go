@@ -1,11 +1,10 @@
 package kvwrapper_etcd
 
 import (
-	"github.com/behance/go-common/kvwrapper"
-	"github.com/coreos/go-etcd/etcd"
 	"strings"
 
-	log "github.com/behance/go-common/log"
+	"github.com/behance/go-common/kvwrapper"
+	"github.com/coreos/go-etcd/etcd"
 )
 
 // EtcdWrapper wraps the go-etcd client so it can implement the KVWrapper interface
@@ -35,7 +34,6 @@ func (e EtcdWrapper) Set(key string, val string, ttl uint64) error {
 func (e EtcdWrapper) GetVal(key string) (*kvwrapper.KeyValue, error) {
 	r, err := e.client.Get(key, false, true)
 	if err != nil {
-		log.Warn("Could not retrieve key from etcd.", "key", key, "error", err)
 		if strings.HasPrefix(err.Error(), "501:") {
 			return nil, kvwrapper.ErrCouldNotConnect
 		} else if strings.HasPrefix(err.Error(), "100:") {
@@ -56,7 +54,6 @@ func (e EtcdWrapper) GetVal(key string) (*kvwrapper.KeyValue, error) {
 func (e EtcdWrapper) GetList(key string, sort bool) ([]*kvwrapper.KeyValue, error) {
 	r, err := e.client.Get(key, sort, true)
 	if err != nil {
-		log.Warn("Could not retrieve key from etcd.", "key", key, "error", err)
 		if strings.HasPrefix(err.Error(), "501:") {
 			return nil, kvwrapper.ErrCouldNotConnect
 		} else if strings.HasPrefix(err.Error(), "100:") {
