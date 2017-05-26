@@ -45,7 +45,7 @@ func (e EtcdWrapper) Set(key string, val string, ttl uint64) error {
 func (e EtcdWrapper) GetVal(key string) (*kvwrapper.KeyValue, error) {
 	options := &etcd.GetOptions{
 		Sort:      false,
-		Recursive: true,
+		Recursive: false,
 	}
 	r, err := e.kapi.Get(context.Background(), key, options)
 	if err != nil {
