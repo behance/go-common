@@ -49,12 +49,10 @@ func (e EtcdWrapper) GetVal(key string) (*kvwrapper.KeyValue, error) {
 	}
 	r, err := e.kapi.Get(context.Background(), key, options)
 	if err != nil {
-		if strings.HasPrefix(err.Error(), "501:") {
-			return nil, kvwrapper.ErrCouldNotConnect
-		} else if strings.HasPrefix(err.Error(), "100:") {
+		if strings.HasPrefix(err.Error(), "100:") {
 			return nil, kvwrapper.ErrKeyNotFound
 		} else {
-			return nil, err
+			return nil, kvwrapper.ErrCouldNotConnect
 		}
 	}
 	kv := &kvwrapper.KeyValue{
@@ -73,12 +71,10 @@ func (e EtcdWrapper) GetList(key string, sort bool) ([]*kvwrapper.KeyValue, erro
 	}
 	r, err := e.kapi.Get(context.Background(), key, options)
 	if err != nil {
-		if strings.HasPrefix(err.Error(), "501:") {
-			return nil, kvwrapper.ErrCouldNotConnect
-		} else if strings.HasPrefix(err.Error(), "100:") {
+		if strings.HasPrefix(err.Error(), "100:") {
 			return nil, kvwrapper.ErrKeyNotFound
 		} else {
-			return nil, err
+			return nil, kvwrapper.ErrCouldNotConnect
 		}
 	}
 	kvs := make([]*kvwrapper.KeyValue, 0)
