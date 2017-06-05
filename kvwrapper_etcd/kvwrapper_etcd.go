@@ -49,7 +49,7 @@ func (e EtcdWrapper) GetVal(key string) (*kvwrapper.KeyValue, error) {
 	}
 	r, err := e.kapi.Get(context.Background(), key, options)
 	if err != nil {
-		if strings.HasPrefix(err.Error(), "100:") {
+		if etcd.IsKeyNotFound(err) {
 			return nil, kvwrapper.ErrKeyNotFound
 		} else {
 			return nil, kvwrapper.ErrCouldNotConnect
@@ -71,7 +71,7 @@ func (e EtcdWrapper) GetList(key string, sort bool) ([]*kvwrapper.KeyValue, erro
 	}
 	r, err := e.kapi.Get(context.Background(), key, options)
 	if err != nil {
-		if strings.HasPrefix(err.Error(), "100:") {
+		if etcd.IsKeyNotFound(err) {
 			return nil, kvwrapper.ErrKeyNotFound
 		} else {
 			return nil, kvwrapper.ErrCouldNotConnect
