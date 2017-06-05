@@ -2,10 +2,10 @@ package kvwrapper_etcd
 
 import (
 	"context"
-	"strings"
 	"time"
 
 	"github.com/behance/go-common/kvwrapper"
+	log "github.com/behance/go-logging/log"
 	etcd "github.com/coreos/etcd/client"
 )
 
@@ -36,6 +36,7 @@ func (e EtcdWrapper) Set(key string, val string, ttl uint64) error {
 	}
 	_, err := e.kapi.Set(context.Background(), key, val, options)
 	if err != nil {
+		log.Warn("Could not set key in etcd.", "key", key, "err", err)
 		return err
 	}
 	return nil
@@ -51,9 +52,9 @@ func (e EtcdWrapper) GetVal(key string) (*kvwrapper.KeyValue, error) {
 	if err != nil {
 		if etcd.IsKeyNotFound(err) {
 			return nil, kvwrapper.ErrKeyNotFound
-		} else {
-			return nil, kvwrapper.ErrCouldNotConnect
 		}
+		log.Warn("Could not retrieve key from etcd.", "key", key, "err", err)
+		return nil, kvwrapper.ErrCouldNotConnect
 	}
 	kv := &kvwrapper.KeyValue{
 		Key:         key,
@@ -63,7 +64,7 @@ func (e EtcdWrapper) GetVal(key string) (*kvwrapper.KeyValue, error) {
 	return kv, nil
 }
 
-// GetVal returns a []KeyValue found at key
+// GetList returns a []KeyValue found at key
 func (e EtcdWrapper) GetList(key string, sort bool) ([]*kvwrapper.KeyValue, error) {
 	options := &etcd.GetOptions{
 		Sort:      sort,
@@ -73,9 +74,9 @@ func (e EtcdWrapper) GetList(key string, sort bool) ([]*kvwrapper.KeyValue, erro
 	if err != nil {
 		if etcd.IsKeyNotFound(err) {
 			return nil, kvwrapper.ErrKeyNotFound
-		} else {
-			return nil, kvwrapper.ErrCouldNotConnect
 		}
+		log.Warn("Could not retrieve key from etcd.", "key", key, "err", err)
+		return nil, kvwrapper.ErrCouldNotConnect
 	}
 	kvs := make([]*kvwrapper.KeyValue, 0)
 	for i := 0; i < r.Node.Nodes.Len(); i++ {
