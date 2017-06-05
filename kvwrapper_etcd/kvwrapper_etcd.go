@@ -54,7 +54,7 @@ func (e EtcdWrapper) GetVal(key string) (*kvwrapper.KeyValue, error) {
 			return nil, kvwrapper.ErrKeyNotFound
 		}
 		log.Warn("Could not retrieve key from etcd.", "key", key, "err", err)
-		return nil, kvwrapper.ErrCouldNotConnect
+		return nil, err
 	}
 	kv := &kvwrapper.KeyValue{
 		Key:         key,
@@ -76,7 +76,7 @@ func (e EtcdWrapper) GetList(key string, sort bool) ([]*kvwrapper.KeyValue, erro
 			return nil, kvwrapper.ErrKeyNotFound
 		}
 		log.Warn("Could not retrieve key from etcd.", "key", key, "err", err)
-		return nil, kvwrapper.ErrCouldNotConnect
+		return nil, err
 	}
 	kvs := make([]*kvwrapper.KeyValue, 0)
 	for i := 0; i < r.Node.Nodes.Len(); i++ {
