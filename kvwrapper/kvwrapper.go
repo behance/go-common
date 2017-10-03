@@ -4,6 +4,7 @@ import (
 	"errors"
 	"strconv"
 	"strings"
+	"sync"
 )
 
 var (
@@ -37,20 +38,27 @@ func NewKVWrapperWithAuth(servers []string, wrapper KVWrapper, username, passwor
 	kvw := wrapper.NewKVWrapper(servers, username, password)
 	return kvw
 }
+
 func NewKVWrapper(servers []string, wrapper KVWrapper) KVWrapper {
 	kvw := wrapper.NewKVWrapper(servers, "", "")
 	return kvw
 }
 
 type KVFaker struct {
-	c map[string][]*KeyValue
+	c     map[string][]*KeyValue
+	mutex *sync.Mutex
 }
 
 func (f KVFaker) NewKVWrapper(servers []string, username, password string) KVWrapper {
 	f.c = make(map[string][]*KeyValue)
+	f.mutex = &sync.Mutex{}
 	return f
 }
+
 func (f KVFaker) Set(key string, val string, ttl uint64) error {
+	f.mutex.Lock()
+	defer f.mutex.Unlock()
+
 	keys := strings.Split(key, "/")
 	lastKey := ""
 	var newKey string
@@ -86,14 +94,22 @@ func (f KVFaker) Set(key string, val string, ttl uint64) error {
 	//log.Warn(f.c)
 	return nil
 }
+
 func (f KVFaker) GetVal(key string) (*KeyValue, error) {
+	f.mutex.Lock()
+	defer f.mutex.Unlock()
+
 	if kv, ok := f.c[key]; ok {
 		return kv[len(kv)-1], nil
 	} else {
 		return nil, ErrKeyNotFound
 	}
 }
+
 func (f KVFaker) GetList(key string, sort bool) ([]*KeyValue, error) {
+	f.mutex.Lock()
+	defer f.mutex.Unlock()
+
 	if _, ok := f.c[key]; !ok {
 		return nil, ErrKeyNotFound
 	}
