@@ -3,3 +3,4 @@
 capcom-v*
 Godeps/_workspace/*
 Godeps/Readme
+vendor/
