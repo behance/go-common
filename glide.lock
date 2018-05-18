@@ -24,7 +24,7 @@ imports:
 - name: github.com/PuerkitoBio/rehttp
   version: 5989d9566be1c6334786e55385219c2b9ab1c4dc
 - name: github.com/ugorji/go
-  version: ded73eae5db7e7a0ef6f55aace87a2873c5d2b74
+  version: f3cacc17c85ecb7f1b6a9e373ee85d1480919868
   subpackages:
   - codec
 - name: golang.org/x/net
