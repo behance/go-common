@@ -8,9 +8,10 @@ import:
 - package: github.com/codegangsta/negroni
   version: ^0.2.0
 - package: github.com/coreos/etcd
-  version: ^3.2.0-rc.1
+  version: ~v3.3.8
   subpackages:
   - client
+  - clientv3
 - package: github.com/PuerkitoBio/rehttp
 testImport:
 - package: github.com/onsi/ginkgo
