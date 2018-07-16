@@ -24,7 +24,8 @@ func (e EtcdWrapper) NewKVWrapper(servers []string, username, password string) k
 	}
 	client, err := etcd.New(config)
 	if err != nil {
-		panic(err)
+		log.Fatal("Could not instantiate etcd V2 client.", "err", err)
+		return nil
 	}
 	return EtcdWrapper{kapi: etcd.NewKeysAPI(client)}
 }

@@ -27,7 +27,8 @@ func (e EtcdV3Wrapper) NewKVWrapper(servers []string, username, password string)
 	}
 	client, err := etcdv3.New(config)
 	if err != nil {
-		panic(err)
+		log.Fatal("Could not instantiate etcd V3 client.", "err", err)
+		return nil
 	}
 
 	return EtcdV3Wrapper{kapi: etcdv3.NewKV(client), cli: *client}
