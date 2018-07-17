@@ -27,7 +27,8 @@ func (e EtcdV3Wrapper) NewKVWrapper(servers []string, username, password string)
 	}
 	client, err := etcdv3.New(config)
 	if err != nil {
-		log.Fatal("Could not instantiate etcd V3 client.", "err", err)
+		// even though this is a critical error, wedon't want to issue log.Fatal, since that would os.Exit(1) from within the lib
+		log.Warn("Could not instantiate etcd V3 client.", "err", err)
 		return nil
 	}
 
